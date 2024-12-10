@@ -7,37 +7,37 @@ import { LoanRequestBody } from '../middleware/validation';
 const loanService = new LoanService();
 
 export const getAllLoans: RequestHandler = asyncHandler(async (req, res) => {
-  const loans = await loanService.getAllLoans();
-  res.json(loans);
+  const response = await loanService.getAllLoans();
+  res.json(response);
 });
 
 export const getLoanById: RequestHandler = asyncHandler(async (req, res) => {
-  const loan = await loanService.getLoanById(req.params.id);
-  if (!loan) {
-    throw createHttpError(404, 'Loan not found');
+  const response = await loanService.getLoanById(req.params.id);
+  if (response.status === 'error') {
+    throw createHttpError(404, response.message);
   }
-  res.json(loan);
+  res.json(response);
 });
 
 export const createLoan: RequestHandler = asyncHandler(async (req, res) => {
   const loanData: LoanRequestBody = req.body;
-  const newLoan = await loanService.createLoan(loanData);
-  res.status(201).json(newLoan);
+  const response = await loanService.createLoan(loanData);
+  res.status(201).json(response);
 });
 
 export const updateLoan: RequestHandler = asyncHandler(async (req, res) => {
   const loanData: LoanRequestBody = req.body;
-  const updatedLoan = await loanService.updateLoan(req.params.id, loanData);
-  if (!updatedLoan) {
-    throw createHttpError(404, 'Loan not found');
+  const response = await loanService.updateLoan(req.params.id, loanData);
+  if (response.status === 'error') {
+    throw createHttpError(404, response.message);
   }
-  res.json(updatedLoan);
+  res.json(response);
 });
 
 export const deleteLoan: RequestHandler = asyncHandler(async (req, res) => {
-  const deleted = await loanService.deleteLoan(req.params.id);
-  if (!deleted) {
-    throw createHttpError(404, 'Loan not found');
+  const response = await loanService.deleteLoan(req.params.id);
+  if (response.status === 'error') {
+    throw createHttpError(404, response.message);
   }
-  res.status(204).send();
+  res.status(200).json(response);
 });

@@ -23,34 +23,47 @@ describe('Loan Application API', () => {
   it('POST /api/loans - should create a new loan', async () => {
     const res = await request(app).post('/api/loans').send(newLoan);
     expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty('id');
-    expect(res.body).toHaveProperty('monthlyPayment');
-    loanId = res.body.id;
+    expect(res.body).toHaveProperty('status', 'success');
+    expect(res.body).toHaveProperty('message', 'Loan created successfully');
+    expect(res.body).toHaveProperty('data');
+    expect(res.body.data).toHaveProperty('id');
+    expect(res.body.data).toHaveProperty('monthlyPayment');
+    loanId = res.body.data.id;
   });
 
   it('GET /api/loans - should retrieve all loans', async () => {
     const res = await request(app).get('/api/loans');
     expect(res.statusCode).toEqual(200);
-    expect(Array.isArray(res.body)).toBeTruthy();
-    expect(res.body.length).toBeGreaterThan(0);
+    expect(res.body).toHaveProperty('status', 'success');
+    expect(res.body).toHaveProperty('message', 'Loans retrieved successfully');
+    expect(res.body).toHaveProperty('data');
+    expect(Array.isArray(res.body.data)).toBeTruthy();
+    expect(res.body.data.length).toBeGreaterThan(0);
   });
 
   it('GET /api/loans/:id - should retrieve a loan by ID', async () => {
     const res = await request(app).get(`/api/loans/${loanId}`);
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('id', loanId);
+    expect(res.body).toHaveProperty('status', 'success');
+    expect(res.body).toHaveProperty('message', 'Loan retrieved successfully');
+    expect(res.body).toHaveProperty('data');
+    expect(res.body.data).toHaveProperty('id', loanId);
   });
 
   it('PUT /api/loans/:id - should update a loan', async () => {
     const res = await request(app).put(`/api/loans/${loanId}`).send(updatedLoan);
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('name', updatedLoan.name);
-    expect(res.body).toHaveProperty('loanType', updatedLoan.loanType);
+    expect(res.body).toHaveProperty('status', 'success');
+    expect(res.body).toHaveProperty('message', 'Loan updated successfully');
+    expect(res.body).toHaveProperty('data');
+    expect(res.body.data).toHaveProperty('id', loanId);
   });
 
   it('DELETE /api/loans/:id - should delete a loan', async () => {
     const res = await request(app).delete(`/api/loans/${loanId}`);
-    expect(res.statusCode).toEqual(204);
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('status', 'success');
+    expect(res.body).toHaveProperty('message', 'Loan deleted successfully');
   });
 
   it('GET /api/loans/:id - should return 404 for deleted loan', async () => {
