@@ -19,14 +19,17 @@ npm install
 
 # Run app
 npm start
+```
 
-# Run all tests
+## Run test
+```bash
 npm test
 ```
+
 
 ## Using Postman Collection
 1. Import the collection:
     - Open Postman
     - Click "Import"
-    - Select loan-api.postman_collection.json
+    - Select [loan-api.postman_collection.json](https://github.com/pinglayson/loan-api/blob/main/loan-api.postman_collection.json)
     - The collection contains all API endpoints with example requests
